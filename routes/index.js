@@ -13,7 +13,7 @@ var crypto = require('crypto');
 var flash = require('express-flash');
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://hhk998402:SkillRack998@quizcluster-shard-00-00-1gbtm.mongodb.net:27017,quizcluster-shard-00-01-1gbtm.mongodb.net:27017,quizcluster-shard-00-02-1gbtm.mongodb.net:27017/quiz?ssl=true&replicaSet=QuizCluster-shard-0&authSource=admin";
+var url = "mongodb://msrmhauth:enigma2k17@msrmh-shard-00-00-znqup.mongodb.net:27017,msrmh-shard-00-01-znqup.mongodb.net:27017,msrmh-shard-00-02-znqup.mongodb.net:27017/msrmh?ssl=true&replicaSet=msrmh-shard-0&authSource=admin";
 //var User = require('../app.js');
 //var User = mongoose.model('User', userSchema);
 
@@ -109,7 +109,7 @@ router.post('/signup', function(req, res) {
           flag=false;
         }
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(re.test(req.body.email))
+        if(!re.test(req.body.email))
         {
             req.flash('error3','Please enter Valid EMAIL');
             flag=false;
@@ -150,32 +150,50 @@ router.get('/forgot', function(req, res) {
 });
 
 router.get('/printform', (req, res) => {
+    if(req.user)
+    {
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
             db.collection("empexit").findOne({empid:req.user.username}, function(err, result) {
         if (err) throw err;
         var parts = result.date.split("/");
         date = new Date(parts[2], parts[1] - 1, parts[0]);
-        result.addcomments2 = result.addcomments2.replace(/(?:\r\n|\r|\n)/g, '&#13;&#10;');
-        console.log(date);
+        //result.addcomments2 = result.addcomments2.replace(/(?:\r|\n)/g, '&#13;&#10;');
+        //result.addcomments2 = result.addcomments2.split("\n").join("&#13;&#10;");
+        //result.addcomments2=result.addcomments2.replace(/\r?\n/g, '&#13;&#10;');
+        result.addcomments2=result.addcomments2.replace(/\r?\n/g, '@#$%^*');
+        //result.addcomments2='gbwgbe&#10;efewwfeg';
+        console.log(result.addcomments2);
             res.render('printcheck', { user : req.user ,date:result.date, time:result.time,name: result.name,empid:result.empid,designation:result.designation,reportingto:result.reportingto,dateofjoining:result.dateofjoining,resigsubmit:result.resigsubmit,resignotice:result.resignotice,relievedon:result.relievedon,worksatisfaction:result.worksatis,comments:result.comments,op1:result.op1,op2:result.op2,op3:result.op3,op4:result.op4,op5:result.op5,op6:result.op6,op7:result.op7,op8:result.op8,addcomments1:result.addcomments1,addcomments2:result.addcomments2});
             console.log(result.name);
         db.close();
     });
   });
+  }
+  else
+  {
+    res.redirect('/');
+  }
 });
 
 router.get('/delete', function(req, res) {
-  MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  var myquery = { empid: req.user.username };
-  db.collection("empexit").deleteOne(myquery, function(err, obj) {
+  if(req.user)
+  {
+    MongoClient.connect(url, function(err, db) {
     if (err) throw err;
-    console.log("1 document deleted");
-    res.redirect('/');
-    db.close();
+    var myquery = { empid: req.user.username };
+    db.collection("empexit").deleteOne(myquery, function(err, obj) {
+      if (err) throw err;
+      console.log("1 document deleted");
+      res.redirect('/');
+      db.close();
+      });
     });
-  });
+  }
+  else
+  {
+    res.redirect('/');
+  }
 });
 
 router.post('/forgot', function(req, res, next) {
@@ -275,6 +293,8 @@ router.post('/reset/:token', function(req, res) {
 });
 
 router.get('/form001', function(req, res) {
+  if(req.user)
+  {
   MongoClient.connect(url, function(err, db) {
         if (err) throw err;
             db.collection("empexit").findOne({empid:req.user.username}, function(err, result) {
@@ -287,7 +307,10 @@ router.get('/form001', function(req, res) {
           });
         db.close();
     });
-});
+  });
+  }
+  else
+    res.redirect('/');
 });
 
 router.post('/form001', (req, res) => {

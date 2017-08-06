@@ -11,6 +11,7 @@ block content
     else if(user)
         h1(class="title") Employee Exit Forms
         <br>
+        center
         .card1
             .container2
                 h4(class="username") Welcome, #{user.username}
@@ -18,7 +19,12 @@ block content
                 if(!formexist)
                     a(class="btn",href="/form001") Enter Employee Exit Form
                 else
-                    a(class="btn",href="/printform") View filled in Employee Exit Form
-                    a(class="btn",href="/delete") Delete existing filled in form
+                    table(class="options")
+                        thead
+                            th
+                                td
+                                    a(class="btn",href="/printform") View filled in Employee Exit Form
+                                td
+                                    a(class="btn",href="/delete") Delete existing filled in form
             </div>
         </div>

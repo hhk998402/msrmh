@@ -81,7 +81,6 @@ display:-moz-box;
   height: 100%;
   width: 60%;
   position:relative;
-
     padding: 10px;
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }
@@ -108,8 +107,8 @@ display:-moz-box;
 .btn {
   position: relative;
 
-  display: block;
-  margin: 30px auto;
+  display: inline-block;
+  margin: 8px auto;
   padding: 0;
 
   overflow: hidden;
@@ -172,7 +171,7 @@ display:-moz-box;
   box-sizing: border-box;
 }
 .form-style-7{
-    max-width:400px;
+    max-width:100%;
     margin:50px auto;
     background:#fff;
     border-radius:2px;
@@ -186,11 +185,12 @@ display:-moz-box;
     margin:0;
 }
 .form-style-7 li{
-    display: block;
+    display: inline-block;
     padding: 9px;
     border:1px solid #DDDDDD;
     margin-bottom: 30px;
     border-radius: 3px;
+    width: 33%;
 }
 
 .form-style-7 li > label{
@@ -425,6 +425,17 @@ p{
     color:#fff;
 }
 
+.options{
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+}
+
+.options th, td {
+    padding: 2px;
+    text-align: center;
+    border: none;
+}
 
 body {
   padding: 50px;
