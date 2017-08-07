@@ -172,7 +172,7 @@ router.get('/printform', (req, res) => {
   }
   else
   {
-    res.redirect('/');
+    res.redirect('/login');
   }
 });
 
@@ -192,7 +192,7 @@ router.get('/delete', function(req, res) {
   }
   else
   {
-    res.redirect('/');
+    res.redirect('/login');
   }
 });
 
@@ -220,8 +220,18 @@ router.post('/forgot', function(req, res, next) {
       });
     },
     function(token, user, done) {
-      var smtpTransport = nodemailer.createTransport("smtps://msrmhauth%40gmail.com:"+encodeURIComponent('Auth998402') + "@smtp.gmail.com:465");
-      var mailOptions = {
+      //var smtpTransport = nodemailer.createTransport("smtps://msrmhauth%40gmail.com:"+encodeURIComponent('Auth998402') + "@smtp.gmail.com:465");
+        var transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // secure:true for port 465, secure:false for port 587
+            auth: {
+                user: 'msrmhauth998@gmail.com',
+                pass: 'Auth998402'
+            }
+        });
+
+        var mailOptions = {
         to: user.email,
         from: 'msrmhauth@gmail.com',
         subject: 'Node.js Password Reset',
@@ -230,7 +240,7 @@ router.post('/forgot', function(req, res, next) {
           'http://' + req.headers.host + '/reset/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
-      smtpTransport.sendMail(mailOptions, function(err) {
+      transporter.sendMail(mailOptions, function(err) {
         req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
         done(err, 'done');
       });
@@ -274,15 +284,24 @@ router.post('/reset/:token', function(req, res) {
       });
     },
     function(user, done) {
-      var smtpTransport = nodemailer.createTransport("smtps://msrmhauth%40gmail.com:"+encodeURIComponent('Auth998402') + "@smtp.gmail.com:465");
-      var mailOptions = {
+      //var smtpTransport = nodemailer.createTransport("smtps://msrmhauth%40gmail.com:"+encodeURIComponent('Auth998402') + "@smtp.gmail.com:465");
+        var transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // secure:true for port 465, secure:false for port 587
+            auth: {
+                user: 'msrmhauth998@gmail.com',
+                pass: 'Auth998402'
+            }
+        });
+        var mailOptions = {
         to: user.email,
         from: 'msrmhauth@gmail.com',
         subject: 'Your password has been changed',
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
-      smtpTransport.sendMail(mailOptions, function(err) {
+      transporter.sendMail(mailOptions, function(err) {
         req.flash('success', 'Success! Your password has been changed.');
         done(err);
       });
@@ -310,7 +329,7 @@ router.get('/form001', function(req, res) {
   });
   }
   else
-    res.redirect('/');
+    res.redirect('/login');
 });
 
 router.post('/form001', (req, res) => {
