@@ -150,30 +150,65 @@ router.get('/forgot', function(req, res) {
 });
 
 router.get('/printform', (req, res) => {
-    if(req.user)
-    {
+if(req.user)
+{
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
-            db.collection("empexit").findOne({empid:req.user.username}, function(err, result) {
-        if (err) throw err;
-        var parts = result.date.split("/");
-        date = new Date(parts[2], parts[1] - 1, parts[0]);
-        //result.addcomments2 = result.addcomments2.replace(/(?:\r|\n)/g, '&#13;&#10;');
-        //result.addcomments2 = result.addcomments2.split("\n").join("&#13;&#10;");
-        //result.addcomments2=result.addcomments2.replace(/\r?\n/g, '&#13;&#10;');
-        result.addcomments2=result.addcomments2.replace(/\r?\n/g, '@#$%^*');
-        //result.addcomments2='gbwgbe&#10;efewwfeg';
-        console.log(result.addcomments2);
-            res.render('printcheck', { user : req.user ,date:result.date, time:result.time,name: result.name,empid:result.empid,designation:result.designation,reportingto:result.reportingto,dateofjoining:result.dateofjoining,resigsubmit:result.resigsubmit,resignotice:result.resignotice,relievedon:result.relievedon,worksatisfaction:result.worksatis,comments:result.comments,op1:result.op1,op2:result.op2,op3:result.op3,op4:result.op4,op5:result.op5,op6:result.op6,op7:result.op7,op8:result.op8,addcomments1:result.addcomments1,addcomments2:result.addcomments2});
-            console.log(result.name);
-        db.close();
+        db.collection("empexit").findOne({empid:req.user.username}, function(err, result) {
+            if (err) throw err;
+            if(!result)
+                res.redirect('/');
+            else {
+                var parts = result.date.split("/");
+                date = new Date(parts[2], parts[1] - 1, parts[0]);
+                //result.addcomments2 = result.addcomments2.replace(/(?:\r|\n)/g, '&#13;&#10;');
+                //result.addcomments2 = result.addcomments2.split("\n").join("&#13;&#10;");
+                //result.addcomments2=result.addcomments2.replace(/\r?\n/g, '&#13;&#10;');
+                if(result.comments!=null)
+                {
+                    result.comments = result.comments.replace(/\r?\n/g, '@#$%^*');
+                }
+                if(result.addcomments1!=null)
+                    result.addcomments1 = result.addcomments1.replace(/\r?\n/g, '@#$%^*');
+                if(result.addcomments2!=null)
+                    result.addcomments2 = result.addcomments2.replace(/\r?\n/g, '@#$%^*');
+                //result.addcomments2='gbwgbe&#10;efewwfeg';
+                //console.log(result.addcomments2);
+                res.render('printcheck', {
+                    user: req.user,
+                    date: result.date,
+                    time: result.time,
+                    name: result.name,
+                    empid: result.empid,
+                    designation: result.designation,
+                    reportingto: result.reportingto,
+                    dateofjoining: result.dateofjoining,
+                    resigsubmit: result.resigsubmit,
+                    resignotice: result.resignotice,
+                    relievedon: result.relievedon,
+                    worksatisfaction: result.worksatis,
+                    comments: result.comments,
+                    op1: result.op1,
+                    op2: result.op2,
+                    op3: result.op3,
+                    op4: result.op4,
+                    op5: result.op5,
+                    op6: result.op6,
+                    op7: result.op7,
+                    op8: result.op8,
+                    addcomments1: result.addcomments1,
+                    addcomments2: result.addcomments2
+                });
+                console.log(result.name);
+            }
+            db.close();
+        });
     });
-  });
-  }
-  else
-  {
+}
+else
+{
     res.redirect('/login');
-  }
+}
 });
 
 router.get('/delete', function(req, res) {
