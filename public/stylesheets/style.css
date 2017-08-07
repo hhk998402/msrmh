@@ -1,4 +1,5 @@
 table {
+    border-collapse: collapse;
     border: none;
     align:center;
     width: 100%;
@@ -7,9 +8,26 @@ table {
     margin:0;
 }
 th {
+    border-collapse: collapse;
+    border: none;
     background: #333;
     color: white;
     font-weight: bold;
+}
+
+.options{
+    border: none;
+    border-collapse: collapse;
+    align:center;
+    width: 100%;
+}
+
+.options th,td {
+    border: none;
+    border-collapse: collapse;
+    text-align: center;
+    align:center;
+    padding: 2px;
 }
 
 .isa_error {
@@ -418,19 +436,6 @@ p{
     background: #6B9FFF;
     color:#fff;
 }
-
-.options{
-    width: 100%;
-    border: none;
-    border-collapse: collapse;
-}
-
-.options th, td {
-    padding: 2px;
-    text-align: center;
-    border: none;
-}
-
 
 .tabletest{
     border-collapse: collapse;
