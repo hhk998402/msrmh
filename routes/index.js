@@ -13,7 +13,7 @@ var crypto = require('crypto');
 var flash = require('express-flash');
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://msrmhauth:enigma2k17@msrmh-shard-00-00-znqup.mongodb.net:27017,msrmh-shard-00-01-znqup.mongodb.net:27017,msrmh-shard-00-02-znqup.mongodb.net:27017/msrmh?ssl=true&replicaSet=msrmh-shard-0&authSource=admin";
+var url = "mongodb://127.0.0.1/quiz";
 //var User = require('../app.js');
 //var User = mongoose.model('User', userSchema);
 
